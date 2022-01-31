@@ -2,9 +2,11 @@
   "name": "nextjs-app",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
     "build": "next build",
-    "start": "next start",
+    "export": "next export",
+    "serve": "nextbuild && firebase emulators:start --only functions,hosting",
+    "start": "next build && next start -p 4000",
     "lint": "next lint"
   },
   "dependencies": {
@@ -13,7 +15,10 @@
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "@emotion/css": "^11.7.1",
+    "@emotion/react": "^11.7.1",
     "eslint": "8.8.0",
-    "eslint-config-next": "12.0.9"
+    "eslint-config-next": "12.0.9",
+    "next-pwa": "^5.4.4"
   }
 }
