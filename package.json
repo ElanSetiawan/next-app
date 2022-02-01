@@ -15,7 +15,6 @@
     "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "@apollo/client": "^3.5.8",
     "@emotion/css": "^11.7.1",
     "@emotion/react": "^11.7.1",
     "eslint": "8.8.0",

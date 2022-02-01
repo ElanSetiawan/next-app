@@ -16,7 +16,7 @@ import { css } from '@emotion/css'
         padding-bottom: 6px;
         display: inline-block;
     }`,
-    'btnCatch' : `line-height: 2;position: fixed;bottom: 10px;padding: 10px;background-color: #c50345;height: 80px;width: 80px;text-align: center;color: white;border-radius: 50%;margin: auto;left: 0;right: 0;
+    'btnCatch' : `cursor: pointer;line-height: 2;position: fixed;bottom: 10px;padding: 10px;background-color: #c50345;height: 80px;width: 80px;text-align: center;color: white;border-radius: 50%;margin: auto;left: 0;right: 0;
     &:after {
       content: '';
       position: absolute;
@@ -98,6 +98,12 @@ import { css } from '@emotion/css'
   background-color: #ddd;
   position: relative;
   &:after {
+    -webkit-transition: all 1s linear;
+    -moz-transition: all 1s linear;
+    -ms-transition: all 1s linear;
+    -o-transition: all 1s linear;
+    transition: all 1s linear;
+    width:0;
     background-color: #4caf50;
     content: '';
     display: block;
@@ -118,5 +124,15 @@ background-color: #ddd;
 border-radius: 10px;
 margin-bottom: 4px;
 margin-left: 4px;`
+const rel =css`width: 40px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  height: 40px;
+  border: 1px solid #c50345;
+  border-radius: 50%;
+  padding: 4px;
+  background-color: white;
+  color: #c50345;`
 
-export {styled, modalcss, modalinercss, lbl, lbel,dflex,modalHead,content,btn,inputNick,eror,backcss, lbll,bar,space,movesLbl}
+export {styled, modalcss, modalinercss, lbl, lbel,dflex,modalHead,content,btn,inputNick,eror,backcss, lbll,bar,space,movesLbl,rel}

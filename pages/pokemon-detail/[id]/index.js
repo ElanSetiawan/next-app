@@ -4,18 +4,15 @@ import React, { useEffect, useState } from "react";
 // import Image from "next/image";
 import { css } from '@emotion/css'
 import {container, body} from '../../../styles/global'
-
-// import {getDataMoveById, getDataById} from '../../api/getData'
 import { getdataByName } from "../../api/getGrapql";
 import { useAmp } from "next/amp";
-import {styled, modalcss, modalinercss, lbl, lbel,dflex,modalHead,content,btn,inputNick,eror,backcss, lbll,bar,space,movesLbl} from "../../../styles/style-pokemon-detail";
+import {styled, modalcss, modalinercss, lbl,rel, lbel,dflex,modalHead,content,btn,inputNick,eror,backcss, lbll,bar,space,movesLbl} from "../../../styles/style-pokemon-detail";
 
 export const config = { amp: "hybrid" };
 
 const DetailPokemon = ({ detail, name}) => {
   const isAmp = useAmp();
-  // detail.types.map(v => console.log(v.type.name));
-  console.log(detail);
+  
   const [ showModalFlas, setShowModalSuccess] = useState(false);
   const [ showModalDelete, setShowModalDelete] = useState(false);
   const [ nick, setNick] = useState()
@@ -26,7 +23,7 @@ const DetailPokemon = ({ detail, name}) => {
 
   
   const handleCatchPokemon = () => {
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.49999) {
       setShowModalSuccess(true)
     } else {
       setModalFailed(true);
@@ -37,7 +34,7 @@ const DetailPokemon = ({ detail, name}) => {
   const saveLocal =()=>{
     if(localStorage.getItem('catchUser')){
       let prev = JSON.parse(localStorage.getItem('catchUser'))
-      const exist = prev.filter(v => v.name === nick )
+      const exist = prev.filter(v => v.nickname === nick )
       if(exist.length > 0){
         showErrorExist(true)
       }else{
@@ -45,6 +42,7 @@ const DetailPokemon = ({ detail, name}) => {
           'id': detail.id,
           'name': detail.name,
           'nickname': nick,
+          'release': false,
           'img': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${detail.id}.svg`
         }
         let pk = [...prev, pok];
@@ -56,6 +54,7 @@ const DetailPokemon = ({ detail, name}) => {
         'id': detail.id,
         'name': detail.name,
         'nickname': nick,
+        'release': false,
         'img': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${detail.id}.svg`
       }
       localStorage.setItem('catchUser', JSON.stringify([pok]))
@@ -66,14 +65,35 @@ const DetailPokemon = ({ detail, name}) => {
   const deleteLocal =()=>{
     let prev = JSON.parse(localStorage.getItem('catchUser'))
     let newPoke = prev.filter(function(item) {
-      return item.name != name;
+      return item.nickname != name;
     });
     
     localStorage.setItem('catchUser', JSON.stringify(newPoke))
  
-  setShowModalSuccess(false)
-  Router.back();
-}
+    setShowModalSuccess(false)
+    Router.back();
+  }
+
+  const releaseLocal =()=>{
+    let prev = JSON.parse(localStorage.getItem('catchUser'))
+    let newPoke = prev.map(function(item) {
+      if(item.nickname == name){
+        console.log(name);
+        item.release = true
+      }
+      return item;
+    });
+    // console.log(name);
+    // console.log(newPoke);
+    
+    localStorage.setItem('catchUser', JSON.stringify(newPoke))
+ 
+    // setShowModalSuccess(false)
+    Router.back();
+  }
+  
+
+
 
   useEffect(()=>{
     if(name){
@@ -116,6 +136,11 @@ const DetailPokemon = ({ detail, name}) => {
         <div onClick={() => Router.back()} className={backcss}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        </div>}
+        {!isAmp && canDelete && <div className={rel} onClick={()=> setShowModalDelete(true)}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
         </svg>
         </div>}
         <div className={css`${styled.dflex}`}>
@@ -167,7 +192,7 @@ const DetailPokemon = ({ detail, name}) => {
             </div>
         </div>
         {!isAmp &&
-        <div className={css`${styled.btnCatch}`} onClick={()=>canDelete?setShowModalDelete(true):handleCatchPokemon()}>{canDelete? 'Remove': 'Catch'}</div>}
+        <div className={css`${styled.btnCatch}`} onClick={()=>canDelete?releaseLocal():handleCatchPokemon()}>{canDelete? 'Release': 'Catch'}</div>}
 
         
         {!isAmp && showModalFlas && <div className={modalcss}>
