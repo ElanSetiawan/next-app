@@ -42,10 +42,10 @@ const MyPokemon =()=>{
               </div>
               <div className={css`text-align: center;`}>
                   {listMyPokemon.length > 0 ? listMyPokemon.map((v)=>
-                    <Link href={{pathname:`/pokemon-detail/${v.id}`, query: {name: v.name}}} key={v.name} >
+                    <Link href={{pathname:`/pokemon-detail/${v.name}`, query: {name: v.nickname}}} key={v.nickname} >
                         <a className={csslistName}>
                             <img className={img_} src={v.img}  alt="" width={300} height={300} loading="eager"/>
-                            <p>{ v.name}</p>
+                            <p>{ v.nickname}</p>
                         </a>
                     </Link>
                   ):

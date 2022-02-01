@@ -17,7 +17,7 @@ import { css } from '@emotion/css'
   const backcss = css`
   width: 30px;
   padding-top: 10px;position: absolute;
-  top: 4px;`;
+  top: 4px;cursor: pointer;`;
   const title = css`padding: 1rem 0;
   text-align: center;
   font-size: 20px;

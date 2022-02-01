@@ -3,43 +3,36 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { css } from '@emotion/css'
 import {container, body} from '../styles/global'
-import { getDataPagination } from "../pages/api/pagination";
 import { useEffect, useState } from 'react'
 import Router from "next/router";
-import {getDataAll, getDataById} from './api/getData'
 import {csslistName, btnDiv, ar, desc,nextcss,mypokemoncss,dflex,dflex2,img_, overlay} from "../styles/style-home";
+import {getdata} from '../pages/api/getGrapql'
 
-const Home =({pagination, pokemon, r})=>{
-  const [nextUrl, setNextUrl] = useState(pagination.next)
-  const [prevUrl, setPrevUrl] = useState(pagination.previous)
-  const [listPokemon, setListPokemon] = useState(pokemon)
-  const [imgPokemoan, setImgPokemoan] = useState(r)
-  const [loading, setLoading] = useState(false)
-
-  // console.log(r[0].img.dream_world.front_default);
+const Home =({resp})=>{
+  const [listPokemon, setListPokemon] = useState(resp.data.pokemons.results)
+  const [loading, setLoading] = useState(false);
+  const [limit, setLimit] = useState(20)
+  const [ofset, setOfset] = useState(20)
 
   const NextShow = async() =>{
     setLoading(true)
-    const r = await getDataPagination(nextUrl)
-    setNextUrl(r.resp.next)
-    setPrevUrl(r.resp.previous)
-    setListPokemon(r.pokemon)
-    setImgPokemoan(r.r)
+    const resp = await getdata(limit, ofset)
+    setListPokemon(resp.data.pokemons.results)
     document.querySelector('.scroll-here').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     setLoading(false)
+    setOfset(prevState => prevState+20)
   }
   const prevShow = async() =>{
     setLoading(true)
-    const r = await getDataPagination(prevUrl)
-    setNextUrl(r.resp.next)
-    setPrevUrl(r.resp.previous)
-    setListPokemon(r.pokemon)
-    setImgPokemoan(r.r)
+    const resp = await getdata(limit, ofset)
+    setListPokemon(resp.data.pokemons.results)
     document.querySelector('.scroll-here').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     setLoading(false)
+    setOfset(prevState => prevState-20)
   }
 
   useEffect(()=>{
+    
   },[])
 
   return (
@@ -55,16 +48,17 @@ const Home =({pagination, pokemon, r})=>{
             <h1 className='scroll-here'>
               List Pokemon 
             </h1>
-            <span className={css`font-size: 20px;font-weight: 600;`}>Total : {pagination.count }</span>
+            <span className={css`font-size: 20px;font-weight: 600;`}>Total : {resp.data.pokemons.count }</span>
           </div>
 
-        {listPokemon.length > 0 && imgPokemoan.length > 0 && 
+        {listPokemon.length && 
             <div className={dflex2}>
                 {listPokemon.map((item, i) => 
-                  <Link href={`/pokemon-detail/${item.url}`} key={i} >
+                  <Link href={`/pokemon-detail/${item.name}`} key={i} >
                       <a className={css`${csslistName}`}>
-                        <span className={css`font-size: 14px`}>#{item.url}</span>
-                        <img className={img_} src={imgPokemoan[i].img.dream_world.front_default}  alt="" width={300} height={300} loading="eager"/>
+                        <span className={css`font-size: 14px`}>#{item.id}</span>
+                        {/* <img className={img_} src={imgPokemoan[i].img.dream_world.front_default}  alt="" width={300} height={300} loading="eager"/> */}
+                        <img className={img_} src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${item.id}.svg`}  alt="" width={300} height={300} loading="eager"/>
                           <p className={desc}>{ item.name}</p>
                       </a>
                   </Link>
@@ -96,26 +90,8 @@ const Home =({pagination, pokemon, r})=>{
 
 
 Home.getInitialProps = async () => {
-  // const res = await fetch('https://pokeapi.co/api/v2/pokemon/')
-  const resp = await getDataAll()
-  let list = [];
-  const pokemon = resp.results.map((e) => { 
-    const u = e['url'].split('/');
-    const url = `${u[u.length-2]}`;
-    list.push(url)
-    return { "name": e["name"], "url": url } 
-  })
-  let r = [];
-  for (const a of list) {
-      const r_ = await getDataById(a)
-      r.push({'img': r_.sprites.other})
-  }
-  const pagination = {
-    'count': resp.count,
-    'next': resp.next,
-    'previous': resp.previous
-  }
-  return { pagination, pokemon, r}
+  const resp = await getdata(20, 0)
+  return { resp }
 }
 
 export default Home;

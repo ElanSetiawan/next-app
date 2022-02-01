@@ -111,4 +111,12 @@ const space = css`
 width: 20px;
 display: inline-block;`
 
-export {styled, modalcss, modalinercss, lbl, lbel,dflex,modalHead,content,btn,inputNick,eror,backcss, lbll,bar,space}
+const movesLbl = css`display: inline-block;
+padding: 4px;
+font-size: 12px;
+background-color: #ddd;
+border-radius: 10px;
+margin-bottom: 4px;
+margin-left: 4px;`
+
+export {styled, modalcss, modalinercss, lbl, lbel,dflex,modalHead,content,btn,inputNick,eror,backcss, lbll,bar,space,movesLbl}

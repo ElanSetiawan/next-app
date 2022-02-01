@@ -34,7 +34,7 @@ padding: 1rem 0;
 background-color: green;
 color: #fff;
 font-size: 18px;
-border-radius: 6px;margin-bottom: 2rem;`
+border-radius: 6px;margin-bottom: 2rem;cursor: pointer;`
 const nextcss = css`
 background-color: #2196f3;
 color: #fff;
