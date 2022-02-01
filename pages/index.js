@@ -12,23 +12,27 @@ const Home =({resp})=>{
   const [listPokemon, setListPokemon] = useState(resp.data.pokemons.results)
   const [loading, setLoading] = useState(false);
   const [limit, setLimit] = useState(20)
-  const [ofset, setOfset] = useState(20)
+  const [ofset, setOfset] = useState(0)
 
   const NextShow = async() =>{
+    
     setLoading(true)
-    const resp = await getdata(limit, ofset)
+    const resp = await getdata(limit, ofset+20)
     setListPokemon(resp.data.pokemons.results)
     document.querySelector('.scroll-here').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     setLoading(false)
     setOfset(prevState => prevState+20)
   }
   const prevShow = async() =>{
+    
     setLoading(true)
-    const resp = await getdata(limit, ofset)
-    setListPokemon(resp.data.pokemons.results)
-    document.querySelector('.scroll-here').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    if(ofset > 0){
+      const resp = await getdata(limit, ofset-20)
+      setListPokemon(resp.data.pokemons.results)
+      document.querySelector('.scroll-here').scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+      setOfset(prevState => prevState-20)
+    }
     setLoading(false)
-    setOfset(prevState => prevState-20)
   }
 
   useEffect(()=>{

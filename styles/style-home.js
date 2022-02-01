@@ -60,11 +60,10 @@ left: 0;
 right: 0;
 top: 0;
 bottom: 0;
+display: flex;
+align-items: center;
+justify-content: center;
 div {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%,-50%);
 width: 40px;
 height: 40px;
 border-radius: 50%;

@@ -1,7 +1,7 @@
 
 import {css, injectGlobal } from '@emotion/css';
 
-export const container = css`padding: 0 14px;max-width: 1400px;margin: auto;`
+export const container = css`padding: 0 14px;max-width: 1024px;margin: auto;`
 
 export const body = injectGlobal`
 * {
