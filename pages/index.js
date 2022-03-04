@@ -15,7 +15,6 @@ const Home =({resp})=>{
   const [ofset, setOfset] = useState(0)
 
   const NextShow = async() =>{
-    
     setLoading(true)
     const resp = await getdata(limit, ofset+20)
     setListPokemon(resp.data.pokemons.results)
